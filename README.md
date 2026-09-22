@@ -1,10 +1,8 @@
 # 🚀 GitHub Account Age Checker
 
-![GitHub Account Age Checker](https://example.com/banner.png)
-
 A high-performance, professional web tool to calculate and display the exact age and creation date of any GitHub account. Built with pure HTML, CSS, and Vanilla JS for maximum speed and reliability.
 
-**Live Demo:** [https://example.com](https://example.com)
+**Live Demo:** [https://gh-age.pages.dev](https://gh-age.pages.dev)
 
 ## ✨ Key Features
 
