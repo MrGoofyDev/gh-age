@@ -1,0 +1,213 @@
+/**
+ * GitHub Account Age Checker
+ * Pure Vanilla JavaScript logic for API integration, age calculation, and UI management.
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('checker-form');
+    const input = document.getElementById('username-input');
+    const errorMessage = document.getElementById('error-message');
+    const loading = document.getElementById('loading');
+    const results = document.getElementById('results');
+    const shareBtn = document.getElementById('share-btn');
+
+    let ageInterval = null;
+    let creationDate = null;
+
+    // Initialize from URL query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialUsername = urlParams.get('username');
+    if (initialUsername) {
+        input.value = initialUsername;
+        fetchGitHubData(initialUsername);
+    }
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const rawInput = input.value.trim();
+        if (!rawInput) return;
+
+        const username = normalizeUsername(rawInput);
+        if (username) {
+            updateURL(username);
+            fetchGitHubData(username);
+        } else {
+            showError("Invalid username or URL format.");
+        }
+    });
+
+    shareBtn.addEventListener('click', () => {
+        const username = document.getElementById('user-login').textContent.replace('@', '');
+        const shareUrl = `${window.location.origin}${window.location.pathname}?username=${username}`;
+        
+        if (navigator.share) {
+            navigator.share({
+                title: `My GitHub Account Age`,
+                text: `Check out how old my GitHub account is!`,
+                url: shareUrl
+            }).catch(console.error);
+        } else {
+            // Fallback: Copy to clipboard
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                const originalText = shareBtn.innerHTML;
+                shareBtn.innerHTML = `<span class="text-green-600 font-bold">Copied!</span>`;
+                setTimeout(() => { shareBtn.innerHTML = originalText; }, 2000);
+            });
+        }
+    });
+
+    /**
+     * Normalizes input to extract username from URL or @handle
+     */
+    function normalizeUsername(input) {
+        // Handle full URLs (https://github.com/username)
+        const urlMatch = input.match(/github\.com\/([^/]+)/);
+        if (urlMatch) return urlMatch[1].split('?')[0];
+
+        // Handle @username
+        if (input.startsWith('@')) return input.slice(1);
+
+        // Regular username (alphanumeric and hyphens only, no start/end hyphens)
+        if (/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i.test(input)) return input;
+
+        return null;
+    }
+
+    /**
+     * Updates the browser URL without reloading
+     */
+    function updateURL(username) {
+        const newUrl = `${window.location.pathname}?username=${username}`;
+        window.history.pushState({ username }, '', newUrl);
+    }
+
+    /**
+     * Fetches data from GitHub API
+     */
+    async function fetchGitHubData(username) {
+        resetUI();
+        loading.classList.remove('hidden');
+
+        try {
+            const response = await fetch(`https://api.github.com/users/${username}`);
+            
+            if (response.status === 404) {
+                showError("User not found. Please check the username.");
+                return;
+            }
+
+            if (response.status === 403) {
+                showError("API rate limit exceeded. Please try again later.");
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch data.");
+            }
+
+            const data = await response.json();
+            displayResults(data);
+        } catch (err) {
+            showError("An unexpected error occurred. Please check your connection.");
+            console.error(err);
+        } finally {
+            loading.classList.add('hidden');
+        }
+    }
+
+    /**
+     * Displays results in the UI
+     */
+    function displayResults(user) {
+        creationDate = new Date(user.created_at);
+        
+        // Basic Info
+        document.getElementById('user-avatar').src = user.avatar_url;
+        document.getElementById('user-name').textContent = user.name || user.login;
+        document.getElementById('user-login').textContent = `@${user.login}`;
+        document.getElementById('user-repos').textContent = user.public_repos;
+        document.getElementById('user-followers').textContent = user.followers;
+        document.getElementById('user-bio').textContent = user.bio || "No bio available.";
+        document.getElementById('view-on-github').href = user.html_url;
+
+        // Date Formatting
+        const timeOptions = { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric', 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true
+        };
+        
+        // Detect short timezone name (e.g., "EDT", "GMT+6", or localized name)
+        const tzName = new Intl.DateTimeFormat(undefined, { timeZoneName: 'short' })
+            .formatToParts(creationDate)
+            .find(part => part.type === 'timeZoneName')?.value || "";
+
+        const formattedDate = creationDate.toLocaleString(undefined, timeOptions);
+        document.getElementById('creation-local').textContent = tzName ? `${formattedDate} (${tzName})` : formattedDate;
+
+        // Start Ticker
+        results.classList.remove('hidden');
+        results.scrollIntoView({ behavior: 'smooth' });
+        
+        startAgeTicker();
+    }
+
+    /**
+     * Calculates age and updates the counter every second
+     */
+    function startAgeTicker() {
+        if (ageInterval) clearInterval(ageInterval);
+
+        const updateTicker = () => {
+            const now = new Date();
+            const diff = now - creationDate;
+
+            // Simple calculation logic (approximation for years/months for display)
+            const seconds = Math.floor(diff / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+            
+            // More precise Years/Months calculation
+            let years = now.getFullYear() - creationDate.getFullYear();
+            let months = now.getMonth() - creationDate.getMonth();
+            let d = now.getDate() - creationDate.getDate();
+
+            if (d < 0) {
+                months--;
+                // Adjust for days in previous month
+                const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                d += lastMonth.getDate();
+            }
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            document.getElementById('age-years').textContent = String(years).padStart(2, '0');
+            document.getElementById('age-months').textContent = String(months).padStart(2, '0');
+            document.getElementById('age-days').textContent = String(d).padStart(2, '0');
+            document.getElementById('age-hours').textContent = String(hours % 24).padStart(2, '0');
+            document.getElementById('age-minutes').textContent = String(minutes % 60).padStart(2, '0');
+            document.getElementById('age-seconds').textContent = String(seconds % 60).padStart(2, '0');
+        };
+
+        updateTicker();
+        ageInterval = setInterval(updateTicker, 1000);
+    }
+
+    function resetUI() {
+        if (ageInterval) clearInterval(ageInterval);
+        results.classList.add('hidden');
+        errorMessage.textContent = "";
+    }
+
+    function showError(msg) {
+        errorMessage.textContent = msg;
+        loading.classList.add('hidden');
+        results.classList.add('hidden');
+    }
+});
