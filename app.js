@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loading.classList.remove('hidden');
 
         try {
-            const response = await fetch(`https://api.github.com/users/${username}`);
+            const response = await fetch(`https://gh-age.mrgoofy7.workers.dev?username=${username}`);
             
             if (response.status === 404) {
                 showError("User not found. Please check the username.");
