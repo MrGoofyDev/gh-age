@@ -11,50 +11,60 @@ document.addEventListener('DOMContentLoaded', () => {
     const results = document.getElementById('results');
     const shareBtn = document.getElementById('share-btn');
 
+    // Update copyright year
+    const yearSpan = document.getElementById('copyright-year');
+    if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
     let ageInterval = null;
     let creationDate = null;
 
     // Initialize from URL query parameters
     const urlParams = new URLSearchParams(window.location.search);
     const initialUsername = urlParams.get('username');
-    if (initialUsername) {
+    if (initialUsername && input) {
         input.value = initialUsername;
         fetchGitHubData(initialUsername);
     }
 
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const rawInput = input.value.trim();
-        if (!rawInput) return;
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const rawInput = input.value.trim();
+            if (!rawInput) return;
 
-        const username = normalizeUsername(rawInput);
-        if (username) {
-            updateURL(username);
-            fetchGitHubData(username);
-        } else {
-            showError("Invalid username or URL format.");
-        }
-    });
+            const username = normalizeUsername(rawInput);
+            if (username) {
+                updateURL(username);
+                fetchGitHubData(username);
+            } else {
+                showError("Invalid username or URL format.");
+            }
+        });
+    }
 
-    shareBtn.addEventListener('click', () => {
-        const username = document.getElementById('user-login').textContent.replace('@', '');
-        const shareUrl = `${window.location.origin}${window.location.pathname}?username=${username}`;
-        
-        if (navigator.share) {
-            navigator.share({
-                title: `My GitHub Account Age`,
-                text: `Check out how old my GitHub account is!`,
-                url: shareUrl
-            }).catch(console.error);
-        } else {
-            // Fallback: Copy to clipboard
-            navigator.clipboard.writeText(shareUrl).then(() => {
-                const originalText = shareBtn.innerHTML;
-                shareBtn.innerHTML = `<span class="text-green-600 font-bold">Copied!</span>`;
-                setTimeout(() => { shareBtn.innerHTML = originalText; }, 2000);
-            });
-        }
-    });
+    if (shareBtn) {
+        shareBtn.addEventListener('click', () => {
+            const userLoginElem = document.getElementById('user-login');
+            if (!userLoginElem) return;
+            const username = userLoginElem.textContent.replace('@', '');
+            const shareUrl = `${window.location.origin}${window.location.pathname}?username=${username}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: `My GitHub Account Age`,
+                    text: `Check out how old my GitHub account is!`,
+                    url: shareUrl
+                }).catch(console.error);
+            } else {
+                // Fallback: Copy to clipboard
+                navigator.clipboard.writeText(shareUrl).then(() => {
+                    const originalText = shareBtn.innerHTML;
+                    shareBtn.innerHTML = `<span class="text-green-600 font-bold">Copied!</span>`;
+                    setTimeout(() => { shareBtn.innerHTML = originalText; }, 2000);
+                });
+            }
+        });
+    }
 
     /**
      * Normalizes input to extract username from URL or @handle
@@ -147,6 +157,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const formattedDate = creationDate.toLocaleString(undefined, timeOptions);
         document.getElementById('creation-local').textContent = tzName ? `${formattedDate} (${tzName})` : formattedDate;
+
+        // Set local generation timestamp
+        const checkTimestamp = document.getElementById('check-timestamp');
+        if (checkTimestamp) {
+            checkTimestamp.textContent = new Date().toLocaleString(undefined, {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                timeZoneName: 'short'
+            });
+        }
 
         // Start Ticker
         results.classList.remove('hidden');
