@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialUsername = urlParams.get('username');
     if (initialUsername && input) {
         input.value = initialUsername;
-        fetchGitHubData(initialUsername);
+        fetchGitHubData(initialUsername, false); // Don't scroll on initial load
     }
 
     if (form) {
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const username = normalizeUsername(rawInput);
             if (username) {
                 updateURL(username);
-                fetchGitHubData(username);
+                fetchGitHubData(username, true); // Scroll for manual checks
             } else {
                 showError("Invalid username or URL format.");
             }
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Fetches data from GitHub API
      */
-    async function fetchGitHubData(username) {
+    async function fetchGitHubData(username, shouldScroll = true) {
         resetUI();
         loading.classList.remove('hidden');
 
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
-            displayResults(data);
+            displayResults(data, shouldScroll);
         } catch (err) {
             showError("An unexpected error occurred. Please check your connection.");
             console.error(err);
@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Displays results in the UI
      */
-    function displayResults(user) {
+    function displayResults(user, shouldScroll = true) {
         creationDate = new Date(user.created_at);
         
         // Basic Info
@@ -172,9 +172,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Start Ticker
+        // Show Results
         results.classList.remove('hidden');
-        results.scrollIntoView({ behavior: 'smooth' });
+        
+        if (shouldScroll) {
+            results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
         
         startAgeTicker();
     }
