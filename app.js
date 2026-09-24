@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialUsername = urlParams.get('username');
     if (initialUsername && input) {
         input.value = initialUsername;
-        fetchGitHubData(initialUsername, false); // Don't scroll on initial load
+        fetchGitHubData(initialUsername, true); // Re-enabled scroll on load
     }
 
     if (form) {
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const username = normalizeUsername(rawInput);
             if (username) {
                 updateURL(username);
-                fetchGitHubData(username, true); // Scroll for manual checks
+                fetchGitHubData(username, true); 
             } else {
                 showError("Invalid username or URL format.");
             }
@@ -116,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
+            loading.classList.add('hidden'); // Hide loading before displaying to ensure correct scroll measurement
             displayResults(data, shouldScroll);
         } catch (err) {
             showError("An unexpected error occurred. Please check your connection.");
@@ -176,7 +177,10 @@ document.addEventListener('DOMContentLoaded', () => {
         results.classList.remove('hidden');
         
         if (shouldScroll) {
-            results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Use setTimeout to ensure the DOM has updated and layout is stable before scrolling
+            setTimeout(() => {
+                results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
         }
         
         startAgeTicker();
