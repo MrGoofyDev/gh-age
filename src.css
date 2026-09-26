@@ -25,6 +25,17 @@
 }
 
 @layer components {
+  .site-header {
+    isolation: isolate;
+    z-index: 100;
+  }
+
+  .ad-placement {
+    isolation: isolate;
+    position: relative;
+    z-index: 0;
+  }
+
   .animate-fade-in {
     animation: fadeIn 0.5s ease-out forwards;
   }
