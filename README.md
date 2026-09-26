@@ -1,24 +1,35 @@
 # 🚀 GitHub Account Age Checker
 
-A high-performance, professional web tool to calculate and display the exact age and creation date of any GitHub account. Built with pure HTML, CSS, and Vanilla JS for maximum speed and reliability.
+A browser-based tool that looks up a public GitHub profile's creation date and calculates elapsed account age. Built with HTML, CSS, and vanilla JavaScript.
 
 **Live Demo:** [https://gh-age.pages.dev](https://gh-age.pages.dev)
 
 ## ✨ Key Features
 
-- **Live API Fetching:** Direct integration with the official GitHub REST API for real-time data.
+- **Live API Fetching:** Uses the GitHub API to retrieve public profile data when a username is submitted.
 - **Real-Time Ticker:** Experience a live counter that increments the account age every second.
 - **Local Timezone Conversion:** Automated conversion of ISO timestamps to your local date and time format.
 - **Detailed Profile Insights:** View avatars, bios, follower counts, and repository stats instantly.
 - **Mobile Responsiveness:** Fully optimized for all devices, from desktops to smartphones.
-- **SEO Ready:** Pre-configured with meta tags, Open Graph data, and schema markup for search engine visibility.
+- **SEO Ready:** Includes page-specific metadata, canonical URLs, structured data, a sitemap, and crawler guidance.
 
 ## 🛠 Tech Stack
 
-- **Frontend:** HTML5, Tailwind CSS
+- **Frontend:** HTML5, locally compiled Tailwind CSS
 - **Interactivity:** Vanilla JavaScript
 - **API:** Official GitHub REST API
 - **Deployment:** Optimized for Cloudflare Pages
+
+## 🎨 Stylesheet Build
+
+Install the development dependency and rebuild the purged stylesheet after changing Tailwind classes:
+
+```sh
+npm install
+npm run build:css
+```
+
+The committed `style.css` is served directly by Cloudflare Pages; visitors do not load the Tailwind CDN or its runtime.
 
 ## 🔒 License Notice
 

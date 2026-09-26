@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(shareUrl).then(() => {
                     if (copyTimeout) clearTimeout(copyTimeout);
-                    shareBtn.innerHTML = `<span class="text-green-600 font-bold">Copied!</span>`;
+                    shareBtn.innerHTML = `<span class="text-green-700 font-bold">Copied!</span>`;
                     copyTimeout = setTimeout(() => {
                         shareBtn.innerHTML = defaultShareHTML;
                         copyTimeout = null;
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     document.execCommand('copy');
                     if (copyTimeout) clearTimeout(copyTimeout);
-                    shareBtn.innerHTML = `<span class="text-green-600 font-bold">Copied!</span>`;
+                    shareBtn.innerHTML = `<span class="text-green-700 font-bold">Copied!</span>`;
                     copyTimeout = setTimeout(() => {
                         shareBtn.innerHTML = defaultShareHTML;
                         copyTimeout = null;

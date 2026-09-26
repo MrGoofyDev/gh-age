@@ -1,0 +1,13 @@
+# GitHub Account Age Checker
+
+> A free browser-based tool for checking the creation date and elapsed age of a public GitHub account.
+
+Enter a GitHub username or profile URL in the checker to view the account's public creation date and a live elapsed-age counter. The lookup uses the GitHub API; results depend on GitHub's data, service availability, and rate limits.
+
+## Pages
+
+- [GitHub Account Age Checker](https://gh-age.pages.dev/): Check a public profile's creation date and account age.
+- [Contact](https://gh-age.pages.dev/contact): Contact the site team for help or feedback.
+- [Privacy Policy](https://gh-age.pages.dev/privacy): Learn how the site handles requests and data.
+- [Terms of Service](https://gh-age.pages.dev/terms): Review the terms for using the site.
+- [Sitemap](https://gh-age.pages.dev/sitemap.xml): Find the site's indexable pages.

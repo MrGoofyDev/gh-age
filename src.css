@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  :focus-visible {
+    outline: 2px solid #4f46e5;
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  .counter-box {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .counter-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.1), 0 2px 4px -1px rgba(79, 70, 229, 0.06);
+  }
+
+  .prose {
+    color: #4b5563;
+    max-width: 65ch;
+  }
+
+  .prose p {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+    line-height: 1.75;
+  }
+
+  .prose h2 {
+    color: #4f46e5;
+    font-size: 1.5em;
+    font-weight: 700;
+    line-height: 1.333;
+    margin-top: 1.6em;
+    margin-bottom: 0.8em;
+  }
+
+  .prose h2:first-child,
+  .prose p:first-child {
+    margin-top: 0;
+  }
+
+  .prose code {
+    color: #4f46e5;
+    background-color: #f5f3ff;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    font-weight: 600;
+  }
+
+  @media (min-width: 1024px) {
+    .prose-xl {
+      font-size: 1.25rem;
+      line-height: 1.8;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

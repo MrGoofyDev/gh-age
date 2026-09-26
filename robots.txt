@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://gh-age.pages.dev/sitemap.xml
+Agentmap: https://gh-age.pages.dev/.well-known/ard.json

@@ -1,0 +1,46 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "GitHub Account Age Checker",
+    "identifier": "did:web:gh-age.pages.dev",
+    "documentationUrl": "https://gh-age.pages.dev/",
+    "logoUrl": "https://gh-age.pages.dev/favicon.svg"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:gh-age.pages.dev:site:account-age-checker",
+      "displayName": "GitHub Account Age Checker",
+      "type": "text/html",
+      "url": "https://gh-age.pages.dev/",
+      "description": "A browser-based checker that looks up a public GitHub profile's creation date and calculates its elapsed account age.",
+      "tags": ["GitHub", "account age", "account creation date"],
+      "capabilities": ["PublicProfileLookup", "AccountAgeCalculation"],
+      "representativeQueries": [
+        "When was this GitHub account created?",
+        "How old is a public GitHub profile?"
+      ]
+    },
+    {
+      "identifier": "urn:air:gh-age.pages.dev:docs:llms-txt",
+      "displayName": "Site guide for language models",
+      "type": "text/markdown",
+      "url": "https://gh-age.pages.dev/llms.txt",
+      "description": "A concise guide to the site's account-age checker, pages, and limitations.",
+      "representativeQueries": [
+        "What does the GitHub Account Age Checker do?",
+        "How can I contact the GitHub Account Age Checker team?"
+      ]
+    },
+    {
+      "identifier": "urn:air:gh-age.pages.dev:docs:sitemap",
+      "displayName": "Sitemap",
+      "type": "application/xml",
+      "url": "https://gh-age.pages.dev/sitemap.xml",
+      "description": "The site's indexable pages.",
+      "representativeQueries": [
+        "Which pages are available on GitHub Account Age Checker?",
+        "Find the privacy policy or terms of service."
+      ]
+    }
+  ]
+}
