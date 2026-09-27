@@ -40,14 +40,22 @@
 
   .ad-banner-slot {
     width: 100%;
+    max-width: 728px;
+    aspect-ratio: 728 / 90;
+    position: relative;
+    overflow: hidden;
   }
 
   .ad-banner-slot iframe {
     display: block;
-    width: 100% !important;
-    max-width: 100%;
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 728px !important;
+    max-width: none !important;
     height: 90px !important;
     border: 0;
+    transform-origin: top left !important;
   }
 
   .ad-rectangle-slot {

@@ -20,8 +20,8 @@
         @media(min-width:1536px){.container{max-width:1536px}}
         .site-header{isolation:isolate;position:sticky;top:0;z-index:1000}
         .ad-placement{isolation:isolate;position:relative;z-index:0}
-        .ad-banner-slot{width:100%}
-        .ad-banner-slot iframe{display:block;width:100%!important;max-width:100%;height:90px!important;border:0}
+        .ad-banner-slot{width:100%;max-width:728px;aspect-ratio:728/90;position:relative;overflow:hidden}
+        .ad-banner-slot iframe{display:block;position:absolute!important;top:0;left:0;width:728px!important;max-width:none!important;height:90px!important;border:0;transform-origin:top left!important}
         .ad-rectangle-slot{width:300px;max-width:100%}
         .ad-rectangle-slot iframe{display:block;width:100%!important;max-width:300px;height:250px!important;border:0}
         .mx-auto{margin-left:auto;margin-right:auto}
@@ -102,9 +102,9 @@
             .md\:text-5xl{font-size:3rem;line-height:1}
         }
     </style>
-    <link rel="preload" href="/style.css?v=1.1.3" as="style" fetchpriority="high">
-    <link rel="stylesheet" href="/style.css?v=1.1.3" media="print" onload="this.onload=null;this.media='all'">
-    <noscript><link rel="stylesheet" href="/style.css?v=1.1.3"></noscript>
+    <link rel="preload" href="/style.css?v=1.1.4" as="style" fetchpriority="high">
+    <link rel="stylesheet" href="/style.css?v=1.1.4" media="print" onload="this.onload=null;this.media='all'">
+    <noscript><link rel="stylesheet" href="/style.css?v=1.1.4"></noscript>
 
     <!-- Primary Meta Tags -->
     <title>GitHub Account Age Checker | Find Account Creation Date</title>
@@ -141,6 +141,7 @@
     <meta name="twitter:description" content="Check when a public GitHub account was created and calculate its age with a live counter.">
     <meta name="twitter:image" content="https://gh-age.pages.dev/og-image.jpg">
 
+    <script defer src="/ads.js?v=1.0.0"></script>
     <script defer src="/app.js?v=1.1.0"></script>
 
     <!-- JSON-LD Schema: WebApplication -->
@@ -181,7 +182,7 @@
     </header>
 
     <main id="main-content" class="container mx-auto px-4 py-12">
-        <div class="ad-placement mb-12 flex flex-col items-center"><span class="text-[10px] uppercase tracking-widest text-gray-500 mb-1">Advertisement</span><div class="ad-banner-slot w-full max-w-[728px] min-h-[90px] flex items-center justify-center overflow-hidden">
+        <div class="ad-placement mb-12 flex flex-col items-center"><span class="text-[10px] uppercase tracking-widest text-gray-500 mb-1">Advertisement</span><div class="ad-banner-slot w-full flex items-center justify-center overflow-hidden">
             <script>
               atOptions = {
                 'key' : '433319836703c5a991b59400e6a0d6d9',
